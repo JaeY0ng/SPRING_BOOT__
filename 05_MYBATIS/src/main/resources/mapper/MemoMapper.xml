@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.domain.mapper.MemoMapper">
+
+
+	<insert id="Insert_xml"  parameterType="com.example.demo.domain.dto.MemoDto">
+		<selectKey keyProperty="id" order="AFTER" resultType="int">
+			select max(id) from tbl_memo
+		</selectKey>
+		insert into tbl_memo values(null,#{text},#{writer},now())
+	</insert>
+
+	<update id="Update_xml" parameterType="com.example.demo.domain.dto.MemoDto">
+		update tbl_memo set text=#{text},writer=#{writer} where id=#{id}
+	</update>
+	
+	<delete id="Delete_xml" parameterType="int">
+		delete from tbl_memo where id=#{id}
+	</delete>
+	
+	<select id="SelectOne_xml" parameterType="int"  resultType="com.example.demo.domain.dto.MemoDto">
+		select * from tbl_memo where id=#{id}
+	</select>
+	
+	<select id="SelectAll_xml_1" resultType="com.example.demo.domain.dto.MemoDto">
+		select * from tbl_memo
+	</select>
+	<select id="SelectAll_xml_2" resultType="java.util.Map">
+		select * from tbl_memo
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="MemoResultMap2">
+		<id property="id" column="id"></id>
+		<result property="text" column="text"></result>
+	</resultMap>
+	
+	<select id="SelectAll_xml_3" resultMap="MemoResultMap2" >
+		select id,text from tbl_memo
+	</select>
+	
+	<select id="Select_if_xml" parameterType="java.util.Map" resultType="java.util.Map" >
+		select * from tbl_memo
+		<if test="type!=null and type.equals('text')">
+			where text like concat('%',#{keyword},'%')
+		</if>
+	</select>
+	
+	<select id="Select_when_xml" parameterType="java.util.Map" resultType="java.util.Map" >
+		select * from tbl_memo
+		<if test="type!=null">
+			where
+			<choose>
+				<when test="type.equals('id')">
+					 id like concat('%',#{keyword},'%')
+				</when>
+				<when test="type.equals('text')">
+					 text like concat('%',#{keyword},'%')
+				</when>
+				<when test="type.equals('writer')">
+					 writer like concat('%',#{keyword},'%')
+				</when>
+				<otherwise>
+					 createAt &lt;= #{keyword}
+				</otherwise>
+			
+			</choose>
+		</if>
+		
+	</select>
+	
+	
+</mapper>
+

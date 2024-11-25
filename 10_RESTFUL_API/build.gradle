@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.0'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//THYMELEAF
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//WEB
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//LOMBOK
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	//ETC
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//REST
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.18.1'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.1'
+	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.18.1'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
+
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1' // XML 바인딩 API 추가
+	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'  // JAXB 런타임 라이브러리 추가
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

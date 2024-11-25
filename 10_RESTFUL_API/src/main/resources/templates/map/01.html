@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    DOC leaflet https://leafletjs.com/reference.html#tilelayer
+    DOC leaflet 적용 한국 지도: https://github.com/tontita/Leaflet.KoreanTmsProviders
+
+    -->
+
+    <!-- leaflet    -->
+    <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" rel="stylesheet"/>
+    <script crossorigin=""
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Leaflet Plugins: Leaflet.KoreanTmsProviders 추가  -->
+    <script src="/js/KoreanTmsProviders/lib/proj4.js"></script>
+    <script src="/js/KoreanTmsProviders/lib/proj4leaflet.js"></script>
+    <script src="/js/KoreanTmsProviders/src/Leaflet.KoreanTmsProviders.js"></script>
+
+    <!-- GEOCODER -->
+    <link href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <!-- Axios -->
+    <script crossorigin="anonymous"
+            integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g=="
+            referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="map" style="width:100%;height:100vh;"></div>
+
+<script>
+    console.log("L", L);
+    //        var map = L.map('map', {
+    //            center: [51.505, -0.09],
+    //            zoom: 13
+    //        })
+
+    //        L.tileLayer(
+    //            'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
+    //           {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
+    //       )
+    //        .addTo(map);
+
+    var map = new L.Map('map', {
+        center: new L.LatLng(35.849957, 128.520305), //중심점 : 대구
+        zoom: 8,	//Leaflet.KoreanTmsProviders.js : resolutions기준 줌 레벨(Level 12)
+        crs: L.Proj.CRS.Daum, //Leaflet.KoreanTmsProviders.js : 새로 정의된 Daum Map CRS
+        worldCopyJump: false,  //https://leafletjs.com/reference-1.3.2.html#map-worldcopyjump 참조
+    });
+    var baseLayers = L.tileLayer.koreaProvider('DaumMap.Street').addTo(map);
+
+    // GEOCODER 추가
+
+    var geocoder = L.Control.geocoder({
+        defaultMarkGeocode: false
+    })
+        .on('markgeocode', function (e) {
+        })
+        .addTo(map);
+
+    //중심좌표 마커 추가
+    var centerMarker = L.marker([35.849957, 128.520305]).addTo(map);
+
+    //툴팁 추가
+    centerMarker.bindTooltip('<b>중심좌표TOOLTIP</>', {
+        direction: 'top',
+        permanent: false,
+        offset: [-15, -15]
+    })
+    // 팝업 추가
+    centerMarker.bindPopup('<div style="width: 150px;height: 150px;background-color: white;">TEST</div>', {});
+
+    //중심 좌표에 이벤트 추가
+    centerMarker.on('mouseover', function (e) {
+        console.log('mouseover', e)
+        this.openTooltip();
+    })
+    centerMarker.on('mouseout', function (e) {
+        console.log('mouseout', e)
+    })
+    centerMarker.on('click', function (e) {
+        console.log('click', e)
+        this.openPopup();
+    });
+
+
+    map.on('click', function (e) {
+        console.log(e.latlng)
+
+        axios.get(`/openWeather/get/${e.latlng.lat}/${e.latlng.lng}`)
+            .then(resp => {
+                var newMarker = L.marker([35.849957, 128.520305]).addTo(map);
+
+                //툴팁 추가
+                newMarker.bindTooltip(`${e.latlng.lat}/${e.latlng.lng}`, {
+                    direction: 'top',
+                    permanent: false,
+                    offset: [-15, -15]
+                })
+                // 팝업 추가
+                newMarker.bindPopup(`<div style="width: 150px;height: 150px;background-color: white;">${resp.data.base}</div>`, {});
+                console.log(resp)
+
+                newMarker.on('mouseover', function (e) {
+                    console.log('mouseover', e)
+                    this.openTooltip();
+                })
+                newMarker.on('mouseout', function (e) {
+                    console.log('mouseout', e)
+                })
+                newMarker.on('click', function (e) {
+                    console.log('click', e)
+                    this.openPopup();
+                });
+
+
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    })
+
+
+</script>
+</body>
+</html>
