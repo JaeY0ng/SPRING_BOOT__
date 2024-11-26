@@ -10,32 +10,26 @@
     -->
 
     <!-- leaflet    -->
-    <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" rel="stylesheet"/>
-    <script crossorigin=""
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Leaflet Plugins: Leaflet.KoreanTmsProviders 추가  -->
     <script src="/js/KoreanTmsProviders/lib/proj4.js"></script>
     <script src="/js/KoreanTmsProviders/lib/proj4leaflet.js"></script>
     <script src="/js/KoreanTmsProviders/src/Leaflet.KoreanTmsProviders.js"></script>
 
-    <!-- GEOCODER -->
-    <link href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet"/>
+    <!-- GEOCODER   -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-    <!-- Axios -->
-    <script crossorigin="anonymous"
-            integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g=="
-            referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+    <!--    axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        body{
+            margin: 0;padding: 0;
         }
-
     </style>
 
 </head>
@@ -43,7 +37,7 @@
 <div id="map" style="width:100%;height:100vh;"></div>
 
 <script>
-    console.log("L", L);
+    console.log("L",L);
     //        var map = L.map('map', {
     //            center: [51.505, -0.09],
     //            zoom: 13
@@ -55,6 +49,7 @@
     //       )
     //        .addTo(map);
 
+    // 지도 기본타일 적용
     var map = new L.Map('map', {
         center: new L.LatLng(35.849957, 128.520305), //중심점 : 대구
         zoom: 8,	//Leaflet.KoreanTmsProviders.js : resolutions기준 줌 레벨(Level 12)
@@ -63,79 +58,144 @@
     });
     var baseLayers = L.tileLayer.koreaProvider('DaumMap.Street').addTo(map);
 
-    // GEOCODER 추가
-
-    var geocoder = L.Control.geocoder({
-        defaultMarkGeocode: false
-    })
-        .on('markgeocode', function (e) {
+    //GEOCODER 추가
+    var geocoder = L.Control.geocoder({defaultMarkGeocode: false})
+        .on('markgeocode', function(e){
+            console.log(e);
+            map.setView(e.geocode.center,9)
         })
         .addTo(map);
 
+
+
+
+
     //중심좌표 마커 추가
-    var centerMarker = L.marker([35.849957, 128.520305]).addTo(map);
+    var centerMaker = L.marker([35.849957, 128.520305]).addTo(map);
+    //툴팁추가
+    centerMaker.bindTooltip('<b>중심좌표TOOPTIP</>',{direction:'top',permanent:false,offset:[-15,-15]});
+    //팝업추가
+    centerMaker.bindPopup('<div style="width:200px;height:200px;background-color:white">TEST</div>',{})
 
-    //툴팁 추가
-    centerMarker.bindTooltip('<b>중심좌표TOOLTIP</>', {
-        direction: 'top',
-        permanent: false,
-        offset: [-15, -15]
-    })
-    // 팝업 추가
-    centerMarker.bindPopup('<div style="width: 150px;height: 150px;background-color: white;">TEST</div>', {});
-
-    //중심 좌표에 이벤트 추가
-    centerMarker.on('mouseover', function (e) {
-        console.log('mouseover', e)
+    //중심좌표에 이벤트 추가
+    centerMaker.on('mouseover',function(e){
+        console.log('mouseover', e);
         this.openTooltip();
     })
-    centerMarker.on('mouseout', function (e) {
-        console.log('mouseout', e)
+    centerMaker.on('mouseout',function(e){
+        console.log('mouseout', e);
     })
-    centerMarker.on('click', function (e) {
-        console.log('click', e)
+    centerMaker.on('click',function(e){
+        console.log('click', e);
         this.openPopup();
+    })
+
+    map.on('click',function(e){
+        console.log(e.latlng);
+
+        axios.get(`/openWeather/get/${e.latlng.lat}/${e.latlng.lng}`)
+            .then(resp=>{
+                console.log(resp)
+
+                var newMaker = L.marker([`${e.latlng.lat}`, `${e.latlng.lng}`]).addTo(map);
+                //툴팁추가
+                newMaker.bindTooltip(`${e.latlng.lat} / ${e.latlng.lng}`,{direction:'top',permanent:false,offset:[-15,-15]});
+                //팝업추가
+                newMaker.bindPopup(`<div style="width:200px;height:200px;background-color:white">${resp.data.base}</div>`,{})
+
+                newMaker.on('mouseover',function(e){
+                    console.log('mouseover', e);
+                    this.openTooltip();
+                })
+                newMaker.on('mouseout',function(e){
+                    console.log('mouseout', e);
+                })
+                newMaker.on('click',function(e){
+                    console.log('click', e);
+                    this.openPopup();
+                })
+
+            })
+            .catch(err=>{console.log(err);});
     });
 
 
-    map.on('click', function (e) {
-        console.log(e.latlng)
+    <!-- GEOJSON       -->
 
-        axios.get(`/openWeather/get/${e.latlng.lat}/${e.latlng.lng}`)
-            .then(resp => {
-                var newMarker = L.marker([35.849957, 128.520305]).addTo(map);
+    /*
+      // GeoJSON 데이터
+        const geojsonData = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [129.0756, 35.1796]
+                    },
+                    "properties": {
+                        "name": "부산",
+                        "description": "부산광역시 중심"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [128.53051961177493,35.85884302048635],
+                                [128.53759569557545,35.858392192515446],
+                                [128.5368145409084,35.85003948842948],
+                                [128.5303311914725,35.84904086586803],
+                            ]
+                        ]
+                    },
+                    "properties": {
+                        "name": "Polygon Example",
+                        "description": "샘플 폴리곤 영역"
+                    }
+                }
+            ]
+        };
 
-                //툴팁 추가
-                newMarker.bindTooltip(`${e.latlng.lat}/${e.latlng.lng}`, {
-                    direction: 'top',
-                    permanent: false,
-                    offset: [-15, -15]
-                })
-                // 팝업 추가
-                newMarker.bindPopup(`<div style="width: 150px;height: 150px;background-color: white;">${resp.data.base}</div>`, {});
-                console.log(resp)
+        // GeoJSON 레이어 추가
 
-                newMarker.on('mouseover', function (e) {
-                    console.log('mouseover', e)
-                    this.openTooltip();
-                })
-                newMarker.on('mouseout', function (e) {
-                    console.log('mouseout', e)
-                })
+        L.geoJSON(geojsonData, {
+            style: function (feature) {
+                return {
+                    color: 'blue',
+                    fillColor: 'yellow',
+                    fillOpacity: 0.5,
+                    weight: 2
+                };
+            }
+        }).bindPopup(function (layer) {
+            return layer.feature.properties.description;
+        }).addTo(map)
 
+    */
 
+    axios.get("/data/hangjeongdong.geojson")
+        .then(resp=>{
+            //console.log(resp);
 
-                newMarker.on('click', function (e) {
-                    console.log('click', e)
-                    this.openPopup();
-                });
+            L.geoJSON(resp.data, {
+                style: function (feature) {
+                    return {
+                        color: 'gray',
+                        fillColor: 'white',
+                        fillOpacity: 0,
+                        weight: 3
+                    };
+                }
+            }).bindPopup(function (layer) {
+                return layer.feature.properties.description;
+            }).addTo(map)
 
+        })
+        .catch(err=>{console.log(err);});
 
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    })
 
 
 </script>
