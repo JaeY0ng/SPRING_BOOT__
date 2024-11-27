@@ -1,5 +1,4 @@
-package com.example.demo.C04Kakao;
-
+package com.example.demo.C06Google;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -8,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
-@RequestMapping("/kakao")
-public class KakaoChannelController {
+@RequestMapping("/google")
+public class C02GoogleCalenderController {
+    @GetMapping("/cal")
+    public void main(){
+        log.info("GET /google/cal...");
 
-    @GetMapping("/channel/main")
-    public void channel_main(){
-        log.info("GET /kakao/channel/main...");
     }
 }
