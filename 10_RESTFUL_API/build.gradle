@@ -40,18 +40,12 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.1'
 	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.18.1'
 	implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1' // XML 바인딩 API 추가
-	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'  // JAXB 런타임 라이브러리 추가
-
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1' // JSON Simple
-
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
 }

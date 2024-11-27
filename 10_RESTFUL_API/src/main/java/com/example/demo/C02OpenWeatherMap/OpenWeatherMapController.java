@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @Slf4j
 @RequestMapping("/openWeather")
@@ -26,7 +29,7 @@ public class OpenWeatherMapController {
         //
         String apiKey = "b7a263e63bfe790ff0081e9b619e7c91";
         String url =
-                "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+apiKey;
+        "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+apiKey;
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response =
@@ -34,4 +37,6 @@ public class OpenWeatherMapController {
         System.out.println(response);
         return response.getBody();
     }
+
+
 }

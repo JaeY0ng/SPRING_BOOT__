@@ -33,7 +33,7 @@
 
         /* ADDED */
         #menu_wrap::-webkit-scrollbar {
-            display: none;
+          display: none;
         }
 
 
@@ -128,7 +128,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js" integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a3beed9bd6a9df9cde0d2d661c4a315c&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4e1450712d271f29b12b9e5ee26425d7&libraries=services"></script>
 <script>
     // 마커를 담을 배열입니다
     var markers = [];
@@ -193,10 +193,10 @@
     function displayPlaces(places) {
 
         var listEl = document.getElementById('placesList'),
-            menuEl = document.getElementById('menu_wrap'),
-            fragment = document.createDocumentFragment(),
-            bounds = new kakao.maps.LatLngBounds(),
-            listStr = '';
+        menuEl = document.getElementById('menu_wrap'),
+        fragment = document.createDocumentFragment(),
+        bounds = new kakao.maps.LatLngBounds(),
+        listStr = '';
 
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         removeAllChildNods(listEl);
@@ -230,7 +230,7 @@
                 });
                 //추가
                 kakao.maps.event.addListener(marker, 'mouseclick', function() {
-                    displayInfowindow(marker, place);
+                     displayInfowindow(marker, place);
                 });
 
                 //아이템에 마우스 오버되었을때
@@ -257,19 +257,19 @@
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index, places) {
         var el = document.createElement('li'),
-            itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                '<div class="info">' +
-                '   <h5>' + places.place_name + '</h5>';
+        itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                    '<div class="info">' +
+                    '   <h5>' + places.place_name + '</h5>';
 
         if (places.road_address_name) {
             itemStr += '    <span>' + places.road_address_name + '</span>' +
-                '   <span class="jibun gray">' +  places.address_name  + '</span>';
+                        '   <span class="jibun gray">' +  places.address_name  + '</span>';
         } else {
             itemStr += '    <span>' +  places.address_name  + '</span>';
         }
 
-        itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-            '</div>';
+          itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                    '</div>';
 
         el.innerHTML = itemStr;
         el.className = 'item';
@@ -306,7 +306,7 @@
                 offset: new kakao.maps.Point(23, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
             },
             markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-            marker = new kakao.maps.Marker({
+                marker = new kakao.maps.Marker({
                 position: position, // 마커의 위치
                 image: markerImage
             });

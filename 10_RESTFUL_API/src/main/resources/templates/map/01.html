@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--
-    DOC leaflet https://leafletjs.com/reference.html#tilelayer
-    DOC leaflet 적용 한국 지도: https://github.com/tontita/Leaflet.KoreanTmsProviders
+<!--
+DOC leaflet https://leafletjs.com/reference.html#tilelayer
+DOC leaflet 적용 한국 지도: https://github.com/tontita/Leaflet.KoreanTmsProviders
 
-    -->
+-->
 
     <!-- leaflet    -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -34,66 +34,66 @@
 
 </head>
 <body>
-<div id="map" style="width:100%;height:100vh;"></div>
+    <div id="map" style="width:100%;height:100vh;"></div>
 
-<script>
-    console.log("L",L);
-    //        var map = L.map('map', {
-    //            center: [51.505, -0.09],
-    //            zoom: 13
-    //        })
+    <script>
+        console.log("L",L);
+//        var map = L.map('map', {
+//            center: [51.505, -0.09],
+//            zoom: 13
+//        })
 
-    //        L.tileLayer(
-    //            'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
-    //           {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
-    //       )
-    //        .addTo(map);
+//        L.tileLayer(
+//            'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
+//           {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
+//       )
+//        .addTo(map);
 
-    // 지도 기본타일 적용
-    var map = new L.Map('map', {
-        center: new L.LatLng(35.849957, 128.520305), //중심점 : 대구
-        zoom: 8,	//Leaflet.KoreanTmsProviders.js : resolutions기준 줌 레벨(Level 12)
-        crs: L.Proj.CRS.Daum, //Leaflet.KoreanTmsProviders.js : 새로 정의된 Daum Map CRS
-        worldCopyJump: false,  //https://leafletjs.com/reference-1.3.2.html#map-worldcopyjump 참조
-    });
-    var baseLayers = L.tileLayer.koreaProvider('DaumMap.Street').addTo(map);
+        // 지도 기본타일 적용
+ 		var map = new L.Map('map', {
+			  center: new L.LatLng(35.849957, 128.520305), //중심점 : 대구
+			  zoom: 8,	//Leaflet.KoreanTmsProviders.js : resolutions기준 줌 레벨(Level 12)
+			  crs: L.Proj.CRS.Daum, //Leaflet.KoreanTmsProviders.js : 새로 정의된 Daum Map CRS
+			  worldCopyJump: false,  //https://leafletjs.com/reference-1.3.2.html#map-worldcopyjump 참조
+		});
+		var baseLayers = L.tileLayer.koreaProvider('DaumMap.Street').addTo(map);
 
-    //GEOCODER 추가
-    var geocoder = L.Control.geocoder({defaultMarkGeocode: false})
-        .on('markgeocode', function(e){
-            console.log(e);
-            map.setView(e.geocode.center,9)
+        //GEOCODER 추가
+        var geocoder = L.Control.geocoder({defaultMarkGeocode: false})
+                        .on('markgeocode', function(e){
+                            console.log(e);
+                            map.setView(e.geocode.center,9)
+                        })
+                        .addTo(map);
+
+
+
+
+
+        //중심좌표 마커 추가
+        var centerMaker = L.marker([35.849957, 128.520305]).addTo(map);
+        //툴팁추가
+        centerMaker.bindTooltip('<b>중심좌표TOOPTIP</>',{direction:'top',permanent:false,offset:[-15,-15]});
+        //팝업추가
+        centerMaker.bindPopup('<div style="width:200px;height:200px;background-color:white">TEST</div>',{})
+
+        //중심좌표에 이벤트 추가
+        centerMaker.on('mouseover',function(e){
+            console.log('mouseover', e);
+            this.openTooltip();
         })
-        .addTo(map);
+        centerMaker.on('mouseout',function(e){
+            console.log('mouseout', e);
+        })
+        centerMaker.on('click',function(e){
+            console.log('click', e);
+            this.openPopup();
+        })
 
+        map.on('click',function(e){
+            console.log(e.latlng);
 
-
-
-
-    //중심좌표 마커 추가
-    var centerMaker = L.marker([35.849957, 128.520305]).addTo(map);
-    //툴팁추가
-    centerMaker.bindTooltip('<b>중심좌표TOOPTIP</>',{direction:'top',permanent:false,offset:[-15,-15]});
-    //팝업추가
-    centerMaker.bindPopup('<div style="width:200px;height:200px;background-color:white">TEST</div>',{})
-
-    //중심좌표에 이벤트 추가
-    centerMaker.on('mouseover',function(e){
-        console.log('mouseover', e);
-        this.openTooltip();
-    })
-    centerMaker.on('mouseout',function(e){
-        console.log('mouseout', e);
-    })
-    centerMaker.on('click',function(e){
-        console.log('click', e);
-        this.openPopup();
-    })
-
-    map.on('click',function(e){
-        console.log(e.latlng);
-
-        axios.get(`/openWeather/get/${e.latlng.lat}/${e.latlng.lng}`)
+            axios.get(`/openWeather/get/${e.latlng.lat}/${e.latlng.lng}`)
             .then(resp=>{
                 console.log(resp)
 
@@ -117,7 +117,7 @@
 
             })
             .catch(err=>{console.log(err);});
-    });
+        });
 
 
     <!-- GEOJSON       -->
@@ -176,15 +176,17 @@
 
     */
 
+    // 대한민국 법정동 지도 : https://github.com/raqoon886/Local_HangJeongDong
+    // 대한민국 행정동 경계파일 : https://github.com/vuski/admdongkor
     axios.get("/data/hangjeongdong.geojson")
-        .then(resp=>{
+         .then(resp=>{
             //console.log(resp);
 
             L.geoJSON(resp.data, {
                 style: function (feature) {
                     return {
                         color: 'gray',
-                        fillColor: 'white',
+                        fillColor: 'yellow',
                         fillOpacity: 0,
                         weight: 3
                     };
@@ -193,11 +195,11 @@
                 return layer.feature.properties.description;
             }).addTo(map)
 
-        })
-        .catch(err=>{console.log(err);});
+         })
+         .catch(err=>{console.log(err);});
 
 
 
-</script>
+    </script>
 </body>
 </html>
