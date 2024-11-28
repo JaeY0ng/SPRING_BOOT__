@@ -47,6 +47,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//GOOGLECALENDAR
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev20241101-2.0.0'
+
 }
 
 tasks.named('test') {
