@@ -2,6 +2,10 @@ package com.example.demo.config;
 
 import com.example.demo.auth.exceptionHandler.CustomAccessDeniedHandler;
 import com.example.demo.auth.exceptionHandler.CustomAuthenticationEntryPoint;
+import com.example.demo.config.auth.loginHandler.CustomAuthenticationFailureHandler;
+import com.example.demo.config.auth.loginHandler.CustomLoginSuccessHandler;
+import com.example.demo.config.auth.logoutHandler.CustomLogoutHandler;
+import com.example.demo.config.auth.logoutHandler.CustomLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
