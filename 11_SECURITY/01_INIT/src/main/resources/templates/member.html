@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>MEMBER</h1>
+
+    <div th:text="${#authentication}"></div>
+    <hr>
+    <div th:text="${#authentication.name}"></div>
+    <hr>
+    <div th:text="${#authentication.principal}"></div>
+    <hr>
+    <div th:text="${#authentication.principal.userDto}"></div>
+    <hr>
+    <div th:text="${#authentication.principal.userDto.username}"></div>
+    <hr>
+    <div th:text="${#authentication.authorities}"></div>
+    <hr>
+    <div th:text="${#authentication.authenticated}">인증됨!</div>
+    <hr>
+</body>
+</html>
