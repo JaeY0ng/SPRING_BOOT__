@@ -1,4 +1,4 @@
-package com.example.demo.auth;
+package com.example.demo.config.auth;
 
 import com.example.demo.domain.entity.User;
 import com.example.demo.domain.repository.UserRepository;
@@ -20,6 +20,7 @@ public class PrincipalDetailsServiceImpl implements UserDetailsService{
 
 	@Autowired
     private UserRepository userRepository;
+
 
 
 	@Override

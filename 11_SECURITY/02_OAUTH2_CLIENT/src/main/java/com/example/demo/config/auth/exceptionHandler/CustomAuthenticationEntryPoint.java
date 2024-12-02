@@ -1,4 +1,4 @@
-package com.example.demo.auth.exceptionHandler;
+package com.example.demo.config.auth.exceptionHandler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
