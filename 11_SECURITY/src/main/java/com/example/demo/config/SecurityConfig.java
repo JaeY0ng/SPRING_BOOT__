@@ -34,12 +34,16 @@ public class SecurityConfig {
         http.formLogin((login) -> {
             login.permitAll();
             login.loginPage("/login");
+            login.successHandler(new CustomLoginSuccessHandler());
+            login.failureHandler(new CustomAuthenticationFailureHandler());
         });
 
         //로그아웃
         http.logout((logout) -> {
             logout.permitAll();
             logout.logoutUrl("/logout");
+            logout.addLogoutHandler(new CustomLogoutHandler());
+            logout.logoutSuccessHandler(new CustomLogoutSuccessHandler());
         });
 
         //예외처리
