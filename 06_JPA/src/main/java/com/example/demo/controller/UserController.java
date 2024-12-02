@@ -16,10 +16,10 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/join")
-    public void join(){
-        log.info("GET /join");
-    }
+//    @GetMapping("/join")
+//    public void join(){
+//        log.info("GET /join");
+//    }
     @PostMapping("/join")
     public void join_post(UserDto userDto) throws Exception {
         log.info("POST /join");
