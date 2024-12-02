@@ -6,6 +6,7 @@ import com.example.demo.config.auth.loginHandler.CustomAuthenticationFailureHand
 import com.example.demo.config.auth.loginHandler.CustomLoginSuccessHandler;
 import com.example.demo.config.auth.logoutHandler.CustomLogoutHandler;
 import com.example.demo.config.auth.logoutHandler.CustomLogoutSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,10 +14,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,7 +36,7 @@ public class SecurityConfig {
 
         //권한체크
         http.authorizeHttpRequests((auth) -> {
-            auth.requestMatchers("/","/join","/login").permitAll();
+            auth.requestMatchers("/", "/join", "/login").permitAll();
             auth.requestMatchers("/user").hasRole("USER");
             auth.requestMatchers("/member").hasRole("MEMBER");
             auth.requestMatchers("/admin").hasRole("ADMIN");
@@ -63,6 +71,15 @@ public class SecurityConfig {
         });
 
 
+        //REMEMBER_ME
+        http.rememberMe((rm) -> {
+            rm.rememberMeParameter("remember-me");
+            rm.alwaysRemember(false);
+            rm.tokenValiditySeconds(30 * 30);
+            rm.tokenRepository(tokenRepository()); // secret key for remember me cookie
+        });
+
+
         return http.build();
     }
 
@@ -88,4 +105,11 @@ public class SecurityConfig {
 //        return userDetailsManager;
 //    }
 
+
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+        repo.setDataSource(dataSource);
+        return repo;
+    }
 }

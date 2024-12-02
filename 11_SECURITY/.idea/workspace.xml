@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0140b19e-0307-4645-833b-1f92ee0d3cd6" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/auth/loginHandler/CustomAuthenticationFailureHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/auth/loginHandler/CustomLoginSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/auth/logoutHandler/CustomLogoutHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/auth/logoutHandler/CustomLogoutSuccessHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/config/JpaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/JpaConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/SimpleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/SimpleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +90,7 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/jyhhm/OneDrive/바탕 화면/정처산기Study/SpirngSecurity/demo/src/main/resources/templates",
+    "last_opened_file_path": "C:/SPRING_BOOT/11_SECURITY/src/main/resources/templates",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -107,6 +110,7 @@
       <recent name="com.example.demo.config" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\SPRING_BOOT\11_SECURITY\src\main\resources\templates" />
       <recent name="C:\Users\jyhhm\OneDrive\바탕 화면\정처산기Study\SpirngSecurity\demo\src\main\resources\templates" />
       <recent name="C:\Users\jyhhm\OneDrive\바탕 화면\정처산기Study\SpirngSecurity\demo\src\main\java\com\example\config" />
     </key>
@@ -145,7 +149,7 @@
       <workItem from="1733102560525" duration="2957000" />
       <workItem from="1733106242664" duration="765000" />
       <workItem from="1733107164291" duration="383000" />
-      <workItem from="1733107590480" duration="973000" />
+      <workItem from="1733107590480" duration="7298000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
