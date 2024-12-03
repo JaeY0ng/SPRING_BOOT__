@@ -21,4 +21,9 @@ public class User {
     @Column
     private String role;
 
+
+    //OAUTH2 CLIENT
+    private String provider;
+    private String providerId;
+
 }
